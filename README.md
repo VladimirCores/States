@@ -5,9 +5,9 @@ A library for Dart developers.
 	IStateMachine {
 		
 		/**
-    	 * What is the current state?
-    	 * @return The current state.
-    	 */
+		 * What is the current state?
+		 * @return The current state.
+		 */
 		String currentState();
 		
 		/**
@@ -50,10 +50,10 @@ A library for Dart developers.
 		bool stateExists( String checkState );
 		
 		/**
-         * Change the current state by performing an action.
-         * @param action The action to perform.
-         * @return True if the action was able to be performed and the state machine moved to a new state, false if the action was unable to be performed.
-         */
+		 * Change the current state by performing an action.
+		 * @param action The action to perform.
+		 * @return True if the action was able to be performed and the state machine moved to a new state, false if the action was unable to be performed.
+		 */
 		bool performAction( String actionName );
 		
 		/**
@@ -78,11 +78,11 @@ A library for Dart developers.
 
 A simple usage example:
 
-    import 'package:StateMachine/StateMachine.dart';
+	import 'package:StateMachine/StateMachine.dart';
 
-    main() {
-    	stateMachine.addState( STATE_BEGINS );
-        
+	main() {
+		stateMachine.addState( STATE_BEGINS );
+		
 		stateMachine.addState( STATE_LOADING );
 		stateMachine.addState( STATE_LOADING_COMPLETE );
 		stateMachine.addState( STATE_LOADING_FAILED );
@@ -131,7 +131,7 @@ A simple usage example:
 		);
 	
 		stateMachine.performAction( ACTION_LOADING_START );
-    }
+	}
 
 ## Features and bugs
 
