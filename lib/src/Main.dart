@@ -1,10 +1,11 @@
-library StateMachine;
+library state_machine;
 
 part 'interfaces/IStateMachine.dart';
 part 'interfaces/IStateMachineEventListener.dart';
 part 'model/State.dart';
 part 'model/Action.dart';
 part 'model/ActionHandler.dart';
+part 'model/StateChangeHandler.dart';
 
 class StateMachine extends IStateMachine {
 	/**

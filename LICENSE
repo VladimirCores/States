@@ -1,5 +1,3 @@
-part of state_machine;
-
 //------------------------------------------------------------------------------
 //
 // Copyright (c) 2018 Vladimir Cores (Minkin) @ LOGICO Technologies (https://logico.tech)
@@ -23,22 +21,3 @@ part of state_machine;
 // THE SOFTWARE.
 //
 //------------------------------------------------------------------------------
-
-class State
-{
-	/**
-	 * State's name.
-	 */
-	State( String name ) {
-		_name = name;
-	}
-
-	String _name;
-
-	/**
-	 * @return The state's name.
-	 */
-	String get name {
-		return _name;
-	}
-}

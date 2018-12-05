@@ -102,9 +102,9 @@ A simple usage example:
 				scheduleMicrotask(() {
 					print("> \t END OF microtask queue -> state: " + stateMachine.currentState());
 					stateMachine.performAction(
-							Random.secure().nextBool()
-							? ACTION_LOADING_COMPLETE
-							: ACTION_LOADING_FAILED
+						Random.secure().nextBool()
+						? ACTION_LOADING_COMPLETE
+						: ACTION_LOADING_FAILED
 					);
 				});
 			}

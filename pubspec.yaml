@@ -1,14 +1,11 @@
-name: StateMachine
-description: A starting point for Dart libraries or applications.
-# version: 1.0.0
-# homepage: https://logico.tech
-# author: vladimir.cores <vladimir.cores@logico.tech>
+name: state_machine
+description: StateMachine for Dart
+version: 0.1.0
+homepage: https://github.com/DQvsRA/Dart-StateMachine
+author: Vladimir Cores (Minkin) <vladimir.cores@gmail.com>
 
 environment:
   sdk: '>=2.0.0-dev.68.0 <3.0.0'
-
-#dependencies:
-#  path: ^1.4.1
 
 dev_dependencies:
   test: ^1.0.0

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:StateMachine/StateMachine.dart';
+import 'package:state_machine/state_machine.dart';
 
 main() {
 
