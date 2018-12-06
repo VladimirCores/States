@@ -1,11 +1,7 @@
 library dart_machine;
 
-part 'interfaces/IDartMachine.dart';
-part 'interfaces/IDartMachineEventListener.dart';
 part 'model/State.dart';
 part 'model/Action.dart';
-part 'model/ActionHandler.dart';
-part 'model/StateChangeHandler.dart';
 
 class DartMachine extends IDartMachine {
 	/**
@@ -177,4 +173,17 @@ class DartMachine extends IDartMachine {
 				return action;
 		return null;
 	}
+}
+
+abstract class IDartMachine {
+	String currentState();
+	bool actionExists( String checkAction );
+	bool addAction( String fromState, String toState, String action, [ Function handler = null ]);
+	bool addState( String newState );
+	bool changeState( String toState );
+	bool stateExists( String checkState );
+	bool performAction( String actionName );
+	List<Action> validActions();
+	List<State> validStates();
+	void reset();
 }
