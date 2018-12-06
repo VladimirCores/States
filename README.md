@@ -1,8 +1,8 @@
-# StateMachine for Dart v.01
+# State Machine for Dart v0.1.0
 
 A library for Dart developers.
 
-	IStateMachine {
+	IDartMachine {
 		
 		/**
 		 * What is the current state?
@@ -31,7 +31,7 @@ A library for Dart developers.
 		/**
 		 * Adds a new state to the state machine.
 		 * @param newState The new state to add.
-		 * @return Ture is teh state was added, false if it was not.
+		 * @return True is teh state was added, false if it was not.
 		 */
 		bool addState( String newState );
 		

@@ -1,7 +1,7 @@
-name: state_machine
-description: StateMachine for Dart
+name: dart_machine
+description: DartMachine is State Machine for Dart
 version: 0.1.0
-homepage: https://github.com/DQvsRA/Dart-StateMachine
+homepage: https://github.com/DQvsRA/DartMachine
 author: Vladimir Cores (Minkin) <vladimir.cores@gmail.com>
 
 environment:

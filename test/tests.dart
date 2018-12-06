@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:state_machine/state_machine.dart';
+import 'package:dart_machine/dart_machine.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -22,50 +22,50 @@ void main() {
     String ACTION_LOADING_FAILED = "action_loading_failed";
     String ACTION_LOADING_COMPLETE = "action_loading_failed";
 
-    StateMachine stateMachine = new StateMachine();
+    DartMachine dartMachine = new DartMachine();
 
     setUp(() {
-	    stateMachine.addState( STATE_BEGINS );
+	    dartMachine.addState( STATE_BEGINS );
 
-	    stateMachine.addState( STATE_LOADING );
-	    stateMachine.addState( STATE_LOADING_COMPLETE );
-	    stateMachine.addState( STATE_LOADING_FAILED );
+	    dartMachine.addState( STATE_LOADING );
+	    dartMachine.addState( STATE_LOADING_COMPLETE );
+	    dartMachine.addState( STATE_LOADING_FAILED );
 
-	    stateMachine.addState( STATE_PREPARE_MODEL );
-	    stateMachine.addState( STATE_PREPARE_CONTROLLER );
-	    stateMachine.addState( STATE_PREPARE_VIEW );
-	    stateMachine.addState( STATE_PREPARE_COMPLETE );
-	    stateMachine.addState( STATE_READY );
+	    dartMachine.addState( STATE_PREPARE_MODEL );
+	    dartMachine.addState( STATE_PREPARE_CONTROLLER );
+	    dartMachine.addState( STATE_PREPARE_VIEW );
+	    dartMachine.addState( STATE_PREPARE_COMPLETE );
+	    dartMachine.addState( STATE_READY );
 
-	    stateMachine.addAction(
+	    dartMachine.addAction(
 			    STATE_BEGINS,
 			    STATE_LOADING,
 			    ACTION_LOADING_START,
 			    () {
-			    	print("> STATE_BEGINS transition to: " + stateMachine.currentState());
-				    stateMachine.performAction(
+			    	print("> STATE_BEGINS transition to: " + dartMachine.currentState());
+				    dartMachine.performAction(
 						    Random.secure().nextBool()
 						    ? ACTION_LOADING_COMPLETE
 						    : ACTION_LOADING_FAILED
 				    );
 			    });
 
-	    stateMachine.addAction( STATE_LOADING, STATE_LOADING_COMPLETE, ACTION_LOADING_COMPLETE, () => print("> STATE_LOADING transition to: " + stateMachine.currentState()) );
-	    stateMachine.addAction( STATE_LOADING, STATE_LOADING_FAILED, ACTION_LOADING_FAILED, () => print("> STATE_LOADING transition to: " + stateMachine.currentState()) );
+	    dartMachine.addAction( STATE_LOADING, STATE_LOADING_COMPLETE, ACTION_LOADING_COMPLETE, () => print("> STATE_LOADING transition to: " + dartMachine.currentState()) );
+	    dartMachine.addAction( STATE_LOADING, STATE_LOADING_FAILED, ACTION_LOADING_FAILED, () => print("> STATE_LOADING transition to: " + dartMachine.currentState()) );
     });
 
     test('1) Initial State:', () {
-      expect(stateMachine.currentState(), STATE_BEGINS);
+      expect(dartMachine.currentState(), STATE_BEGINS);
     });
 
     test('2) Trying to change state to STATE_LOADING:', () {
-	    expect(stateMachine.changeState( STATE_LOADING ), true);
+	    expect(dartMachine.changeState( STATE_LOADING ), true);
     });
 
     test('3) Current State should be STATE_LOADING:', () {
-	    expect( stateMachine.currentState(), STATE_LOADING );
+	    expect( dartMachine.currentState(), STATE_LOADING );
     });
 
-    stateMachine.performAction( ACTION_LOADING_START );
+    dartMachine.performAction( ACTION_LOADING_START );
   });
 }

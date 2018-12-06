@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:state_machine/state_machine.dart';
+import 'package:dart_machine/dart_machine.dart';
 
 main() {
 
@@ -21,7 +21,7 @@ main() {
 	String ACTION_LOADING_FAILED = "action_loading_failed";
 	String ACTION_LOADING_COMPLETE = "action_loading_failed";
 
-	StateMachine stateMachine = new StateMachine();
+	DartMachine stateMachine = new DartMachine();
 
 	stateMachine.addState( STATE_BEGINS );
 

@@ -1,4 +1,4 @@
-part of state_machine;
+part of dart_machine;
 
 //------------------------------------------------------------------------------
 //
@@ -29,7 +29,7 @@ part of state_machine;
  * @see Events
  */
 
-abstract class IStateMachine {
+abstract class IDartMachine {
 	String currentState();
 	bool actionExists( String checkAction );
 	bool addAction( String fromState, String toState, String action, [ Function handler = null ]);

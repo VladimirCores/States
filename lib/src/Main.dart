@@ -1,17 +1,17 @@
-library state_machine;
+library dart_machine;
 
-part 'interfaces/IStateMachine.dart';
-part 'interfaces/IStateMachineEventListener.dart';
+part 'interfaces/IDartMachine.dart';
+part 'interfaces/IDartMachineEventListener.dart';
 part 'model/State.dart';
 part 'model/Action.dart';
 part 'model/ActionHandler.dart';
 part 'model/StateChangeHandler.dart';
 
-class StateMachine extends IStateMachine {
+class DartMachine extends IDartMachine {
 	/**
 	 * Create a state machine and populate with states
 	 */
-	StateMachine() {
+	DartMachine() {
 	}
 
 	List<Action> _actions = new List<Action>();
@@ -64,7 +64,7 @@ class StateMachine extends IStateMachine {
 	/**
 	 * Adds a new state to the state machine.
 	 * @param newState The new state to add.
-	 * @return Ture is teh state was added, false if it was not.
+	 * @return True is teh state was added, false if it was not.
 	 */
 	bool addState( String newState ) {
 		// can't have duplicate states
