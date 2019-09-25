@@ -32,7 +32,7 @@ class Action
 	/// @param toState State to move to.
 	/// @param name Action's name.
 	/// @param action Method to call on performing action.
-	Action( State fromState, State toState, String name, [ Function action = null ]) {
+	Action( State fromState, State toState, String name, [ Function action ]) {
 		_fromState = fromState;
 		_toState = toState;
 		_name = name;
