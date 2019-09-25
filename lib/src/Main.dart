@@ -27,7 +27,7 @@ class DartMachine extends IDartMachine {
 	/// @param action Action that when performed will move from the from state to the to state.
 	/// @param handler Optional method that gets called when moving between these two states.
 	/// @return true if link was added, false if it was not.
-	bool addAction( String fromState, String toState, String action, [ Function handler = null ]) {
+	bool addAction( String fromState, String toState, String action, [ Function handler ]) {
 		State from;
 		State to;
 
@@ -180,7 +180,7 @@ class DartMachine extends IDartMachine {
 abstract class IDartMachine {
 	String currentState();
 	bool actionExists( String checkAction );
-	bool addAction( String fromState, String toState, String action, [ Function handler = null ]);
+	bool addAction( String fromState, String toState, String action, [ Function handler ]);
 	bool addState( String newState );
 	bool changeState( String toState );
 	bool stateExists( String checkState );
