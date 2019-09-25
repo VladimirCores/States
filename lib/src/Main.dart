@@ -116,7 +116,7 @@ class DartMachine extends IDartMachine {
 	}
 
 	/// Go back to the initial starting state
-	void reset() { _currentState = _states.length > 0 ? _states[0] : null; }
+	void reset() { _currentState = _states.isNotEmpty ? _states[0] : null; }
 
 	/// Does a state exist?
 	///
@@ -130,7 +130,6 @@ class DartMachine extends IDartMachine {
 		}
 		return false;
 	}
-
 
 	/// What are the valid actions you can perform from the current state?
 	///
