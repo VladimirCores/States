@@ -27,13 +27,13 @@ class DartMachine extends IDartMachine {
 	/// @param action Action that when performed will move from the from state to the to state.
 	/// @param handler Optional method that gets called when moving between these two states.
 	/// @return true if link was added, false if it was not.
-	bool addAction( String fromState, String toState, String action, [ Function handler ]) {
+	bool addAction( String fromState, String toState, String action, [ Function handler = null ]) {
 		State from;
 		State to;
 
 		/// can't have duplicate actions
 		for ( Action check in _actions ) {
-			if (check.fromState.name == fromState && check.name == action) {
+			if ( check.fromState.name == fromState && check.name == action ) {
 				return false;
 			}
 		}
@@ -64,15 +64,14 @@ class DartMachine extends IDartMachine {
 			return false;
 		}
 
-			_states.add( new State( newState ));
+		_states.add( new State( newState ));
 
-			/// if no states exist set current state to first state
-			if ( _states.length == 1 ) {
-				_currentState = _states[0];
-			}
-
-			return true;
+		/// if no states exist set current state to first state
+		if ( _states.length == 1 ) {
+			_currentState = _states[0];
 		}
+
+		return true;
 	}
 
 	/// Move from the current state to another state.
@@ -80,113 +79,102 @@ class DartMachine extends IDartMachine {
 	/// @param toState New state to try and move to.
 	/// @return True if the state machine has moved to this new state, false if it was unable to do so.
 	bool changeState( String toState ) {
-		if ( !stateExists( toState )) {
-			return false;
-		}
+		if ( !stateExists( toState )) return false;
 
-			for ( var action in _actions ) {
-				if ( action.fromState == _currentState &&
-						action.toState.name == toState ) {
-					if ( action.action != null ) {
-						action.action();
-					}
-
-					_currentState = action.toState;
-					return true;
+		for ( var action in _actions ) {
+			if ( action.fromState == _currentState && action.toState.name == toState ) {
+				if ( action.action != null) {
+					action.action();
 				}
-			}
-
-				return false;
-			}
-
-			/// What is the current state?
-			///
-			/// @return The current state.
-			String currentState() { return _currentState != null ? _currentState.name : null; }
-
-			/// Change the current state by performing an action.
-			///
-			/// @param action The action to perform.
-			/// @return True if the action was able to be performed and the state machine moved to a new state, false if the action was unable to be performed.
-			bool performAction( String actionName ) {
-				for ( Action action in _actions ) {
-					if ( action.fromState == _currentState && actionName == action.name ) {
-						if ( action.action != null ) {
-							action.action();
-						}
-
-						_currentState = action.toState;
-						return true;
-					}
-				}
-
-				return false;
-			}
-
-			/// Go back to the initial starting state
-			void reset() { _currentState = _states.length > 0 ? _states[0] : null; }
-
-			/// Does a state exist?
-			///
-			/// @param state The state in question.
-			/// @return True if the state exists, false if it does not.
-			bool stateExists( String checkState ) {
-				for ( State state in _states ) {
-					if ( checkState == state.name ) {
-						return true;
-					}
-				}
-
-				return false;
-			}
-
-
-			/// What are the valid actions you can perform from the current state?
-			///
-			/// @return An array of actions.
-			List<Action> validActions() {
-				List<Action> actions = [];
-				for ( Action action in _actions ) {
-					if ( action.fromState == _currentState ) {
-						actions.add(action);
-					}
-				}
-
-				return actions;
-			}
-
-			/// What are the valid states you can get to from the current state?
-			///
-			/// @return An array of states.
-			List<State> validStates() {
-				List<State> states = [];
-				for ( Action action in _actions ) {
-					if ( action.fromState == _currentState ) {
-						states.add(action.toState);
-					}
-				}
-
-				return states;
-			}
-
-			State _findState( String exists ){
-				for ( var state in _states ) {
-					if ( state.name == exists ) {
-						return state;
-					}
-				}
-				return null;
-			}
-
-			Action _findAction( String exists ) {
-				for ( var action in _actions ) {
-					if ( action.name == exists ) {
-						return action;
-					}
-				}
-				return null;
+				_currentState = action.toState;
+				return true;
 			}
 		}
+		return false;
+	}
+
+	/// What is the current state?
+	///
+	/// @return The current state.
+	String currentState() { return _currentState != null ? _currentState.name : null; }
+
+	/// Change the current state by performing an action.
+	///
+	/// @param action The action to perform.
+	/// @return True if the action was able to be performed and the state machine moved to a new state, false if the action was unable to be performed.
+	bool performAction( String actionName ) {
+		for ( Action action in _actions ) {
+			if ( action.fromState == _currentState && actionName == action.name ) {
+				if ( action.action != null) {
+					action.action();
+				}
+				_currentState = action.toState;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/// Go back to the initial starting state
+	void reset() { _currentState = _states.length > 0 ? _states[0] : null; }
+
+	/// Does a state exist?
+	///
+	/// @param state The state in question.
+	/// @return True if the state exists, false if it does not.
+	bool stateExists( String checkState ) {
+		for ( State state in _states ) {
+			if ( checkState == state.name ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	/// What are the valid actions you can perform from the current state?
+	///
+	/// @return An array of actions.
+	List<Action> validActions() {
+		List<Action> actions = [];
+		for ( Action action in _actions ) {
+			if ( action.fromState == _currentState ) {
+				actions.add(action);
+			}
+		}
+		return actions;
+	}
+
+	/// What are the valid states you can get to from the current state?
+	///
+	/// @return An array of states.
+	List<State> validStates() {
+		List<State> states = [];
+		for ( Action action in _actions ) {
+			if ( action.fromState == _currentState ) {
+				states.add(action.toState);
+			}
+		}
+		return states;
+	}
+
+	State _findState( String exists ) {
+		for ( var state in _states ) {
+			if ( state.name == exists ) {
+				return state;
+			}
+		}
+		return null;
+	}
+
+	Action _findAction( String exists ) {
+		for ( var action in _actions ) {
+			if ( action.name == exists ) {
+				return action;
+			}
+		}
+		return null;
+	}
 }
 
 abstract class IDartMachine {
