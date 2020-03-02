@@ -1,7 +1,7 @@
 library dart_machine;
 
-part 'model/State.dart';
-part 'model/Action.dart';
+part 'model/state.dart';
+part 'model/action.dart';
 
 class DartMachine extends IDartMachine {
 	/// Create a state machine and populate with states

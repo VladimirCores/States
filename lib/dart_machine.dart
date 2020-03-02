@@ -1,2 +1,2 @@
 // TODO: Export any libraries intended for clients of this package.
-export 'src/Main.dart';
+export 'src/main.dart';
