@@ -1,0 +1,5 @@
+class Signal {
+  static String COUNTER_SET = "SIGNAL_COUNTER_SET";
+  static String COUNTER_INCREASE = "SIGNAL_COUNTER_INCREASE";
+  static String COUNTER_CHANGED = "SIGNAL_COUNTER_CHANGED";
+}

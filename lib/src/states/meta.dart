@@ -1,4 +1,4 @@
-part of machine;
+part of states;
 
 ///------------------------------------------------------------------------------
 ///
@@ -24,10 +24,10 @@ part of machine;
 ///
 ///------------------------------------------------------------------------------
 
-class Meta
+class StateMeta
 {
 	/// State's name.
-	Meta( String name ) {
+	StateMeta( String name ) {
 		_name = name;
 	}
 

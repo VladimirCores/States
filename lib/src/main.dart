@@ -1,15 +1,15 @@
-library machine;
+library states;
 
-part 'model/meta.dart';
-part 'model/action.dart';
+part 'states/meta.dart';
+part 'states/action.dart';
 
 class States extends IStates {
 	/// Create a state machine and populate with states
 	States();
 
-	List<Action> _actions = new List<Action>();
-	List<Meta> _metas = new List<Meta>();
-	Meta _currentStateMeta;
+	List<StateAction> _actions = new List<StateAction>();
+	List<StateMeta> _metas = new List<StateMeta>();
+	StateMeta _currentStateMeta;
 
 	/// Does an action exist in the state machine?
 	///
@@ -35,11 +35,11 @@ class States extends IStates {
 	/// @param handler Optional method that gets called when moving between these two states.
 	/// @return true if link was added, false if it was not.
 	bool action( String fromState, String toState, String actionName, [ Function handler ]) {
-		Meta from;
-		Meta to;
+		StateMeta from;
+		StateMeta to;
 
 		/// can't have duplicate actions
-		for ( Action action in _actions ) {
+		for ( StateAction action in _actions ) {
 			if ( action.fromState.name == fromState && action.name == actionName ) {
 				return false;
 			}
@@ -56,7 +56,7 @@ class States extends IStates {
 			add( toState );
 			to = _findState( toState );
 		}
-		_actions.add( new Action( from, to, actionName, handler ));
+		_actions.add( new StateAction( from, to, actionName, handler ));
 
 		return true;
 	}
@@ -71,7 +71,7 @@ class States extends IStates {
 			return false;
 		}
 
-		_metas.add( new Meta( newState ));
+		_metas.add( new StateMeta( newState ));
 
 		/// if no states exist set current state to first state
 		if ( _metas.length == 1 ) {
@@ -110,7 +110,7 @@ class States extends IStates {
 	/// @param action The action to perform.
 	/// @return True if the action was able to be performed and the state machine moved to a new state, false if the action was unable to be performed.
 	bool perform( String actionName ) {
-		for ( Action action in _actions ) {
+		for ( StateAction action in _actions ) {
 			if ( action.fromState == _currentStateMeta && actionName == action.name ) {
 				if ( action.action != null) {
 //					print('> Machine : ${action.fromState.name} - $actionName');
@@ -131,7 +131,7 @@ class States extends IStates {
 	/// @param state The state in question.
 	/// @return True if the state exists, false if it does not.
 	bool _exists( String checkState ) {
-		for ( Meta stateMeta in _metas ) {
+		for ( StateMeta stateMeta in _metas ) {
 			if ( checkState == stateMeta.name ) {
 				return true;
 			}
@@ -142,9 +142,9 @@ class States extends IStates {
 	/// What are the valid actions you can perform from the current state?
 	///
 	/// @return An array of actions.
-	List<Action> actions() {
-		List<Action> actions = [];
-		for ( Action action in _actions ) {
+	List<StateAction> actions() {
+		List<StateAction> actions = [];
+		for ( StateAction action in _actions ) {
 			if ( action.fromState == _currentStateMeta ) {
 				actions.add(action);
 			}
@@ -155,9 +155,9 @@ class States extends IStates {
 	/// What are the valid states you can get to from the current state?
 	///
 	/// @return An array of states.
-	List<Meta> metas() {
-		List<Meta> states = [];
-		for ( Action action in _actions ) {
+	List<StateMeta> metas() {
+		List<StateMeta> states = [];
+		for ( StateAction action in _actions ) {
 			if ( action.fromState == _currentStateMeta ) {
 				states.add(action.toState);
 			}
@@ -165,7 +165,7 @@ class States extends IStates {
 		return states;
 	}
 
-	Meta _findState( String exists ) {
+	StateMeta _findState( String exists ) {
 		for ( var state in _metas ) {
 			if ( state.name == exists ) {
 				return state;
@@ -174,7 +174,7 @@ class States extends IStates {
 		return null;
 	}
 
-	Action _findAction( String exists ) {
+	StateAction _findAction( String exists ) {
 		for ( var action in _actions ) {
 			if ( action.name == exists ) {
 				return action;
@@ -191,7 +191,7 @@ abstract class IStates {
 	bool change( String toState );
 	bool action( String fromState, String toState, String action, [ Function handler ]);
 	bool perform( String actionName );
-	List<Action> actions();
-	List<Meta> metas();
+	List<StateAction> actions();
+	List<StateMeta> metas();
 	void reset();
 }

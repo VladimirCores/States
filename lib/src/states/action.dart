@@ -1,4 +1,4 @@
-part of machine;
+part of states;
 
 ///------------------------------------------------------------------------------
 ///
@@ -24,7 +24,7 @@ part of machine;
 ///
 ///------------------------------------------------------------------------------
 
-class Action
+class StateAction
 {
 	/// Creates a new action. The action method is optional.
 	///
@@ -32,15 +32,15 @@ class Action
 	/// @param toState State to move to.
 	/// @param name Action's name.
 	/// @param action Method to call on performing action.
-	Action( Meta fromState, Meta toState, String name, [ Function action ]) {
+	StateAction( StateMeta fromState, StateMeta toState, String name, [ Function action ]) {
 		_fromState = fromState;
 		_toState = toState;
 		_name = name;
 		_action = action;
 	}
 
-	Meta _fromState;
-	Meta _toState;
+	StateMeta _fromState;
+	StateMeta _toState;
 	String _name;
 	Function _action;
 
@@ -50,7 +50,7 @@ class Action
 	}
 
 	/// @return The state to move from.
-	Meta get fromState {
+	StateMeta get fromState {
 		return _fromState;
 	}
 
@@ -60,7 +60,7 @@ class Action
 	}
 
 	/// @return  The state to move to.
-	Meta get toState {
+	StateMeta get toState {
 		return _toState;
 	}
 }
