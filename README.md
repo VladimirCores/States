@@ -1,77 +1,23 @@
-# States - Finite State Machine for Dart v0.1.0
-
-A library for Dart developers.
-
-	IStates {
-		
-		/**
-		 * What is the current state?
-		 * @return The current state.
-		 */
-		String current();
-		
-		/**
-		 * Does an action or a state exist in the state machine?
-		 * @param action The action in question.
-		 * @param state The state in question.
-		 * @param conform The state in question.
-		 * @return True if the action or state exists, false if it does not.
-		 */
-		bool has({ String action, String state });
-		
-		/**
-		 * Add a valid link between two states.
-		 * The state machine can then move between
-		 * @param fromState State you want to move from.
-		 * @param toState State you want to move to.
-		 * @param action Action that when performed will move from the from state to the to state.
-		 * @param handler Optional method that gets called when moving between these two states.
-		 * @return true if link was added, false if it was not.
-		 */
-		bool action( String fromState, String toState, String action, [ Function handler = null ]);
-		
-		/**
-		 * Adds a new state to the state machine.
-		 * @param newState The new state to add.
-		 * @return True is teh state was added, false if it was not.
-		 */
-		bool add( String newState );
-		
-		/**
-		 * Move from the current state to another state.
-		 * @param toState New state to try and move to.
-		 * @return True if the state machine has moved to this new state, false if it was unable to do so.
-		 */
-		bool change( String toState );
-		
-		/**
-		 * Change the current state by performing an action.
-		 * @param action The action to perform.
-		 * @return True if the action was able to be performed and the state machine moved to a new state, false if the action was unable to be performed.
-		 */
-		bool perform( String actionName );
-		
-		/**
-		 * What are the valid actions you can perform from the current state?
-		 * @return An array of actions.
-		 */
-		List<Action> actions();
-		
-		/**
-		 * What are the valid states you can get to from the current state?
-		 * @return An array of states.
-		 */
-		List<Meta> metas();
-		
-		/**
-		 * Go back to the initial starting state
-		 */
-		void reset();
-	}
+# States - Finite State Machine for Dart
+## API:
+```dart
+abstract class IStates {
+	String current();
+	bool has({ String action, String state, bool conform = true });
+	bool add( String newState );
+	bool change( String toState,  { bool performAction = true } );
+	bool action( String fromState, String toState, String action,
+			[ StatesActionListener handler ]);
+	bool perform( String actionName );
+	List<StateAction> actions();
+	List<StateMeta> metas();
+	void reset();
+}
+```
 
 ## Usage
 
-A simple usage example:
+### A simple usage example:
  ```dart
 	States states = new States();
 
@@ -81,17 +27,11 @@ A simple usage example:
     states.add( STATE_LOADING_COMPLETE );
     states.add( STATE_LOADING_FAILED );
 
-    states.add( STATE_PREPARE_MODEL );
-    states.add( STATE_PREPARE_CONTROLLER );
-    states.add( STATE_PREPARE_VIEW );
-    states.add( STATE_PREPARE_COMPLETE );
-    states.add( STATE_READY );
-
     states.action(
             STATE_INITIAL,
             STATE_LOADING,
             ACTION_LOADING_START,
-            () {
+            (StateAction action) {
                 print("> CURRENT on ACTION_LOADING_START state: " + states.current());
                 scheduleMicrotask(() {
                     print("> \t END OF microtask queue -> state: " + states.current());
@@ -109,7 +49,7 @@ A simple usage example:
             STATE_LOADING,
             STATE_LOADING_COMPLETE,
             ACTION_LOADING_COMPLETE,
-            () {
+            (StateAction action) {
                 print("> CURRENT on ACTION_LOADING_COMPLETE - state: " + states.current());
                 scheduleMicrotask(() => print("> \t END OF microtask queue -> state: " + states.current()));
             }
@@ -119,7 +59,7 @@ A simple usage example:
             STATE_LOADING,
             STATE_LOADING_FAILED,
             ACTION_LOADING_FAILED,
-            () {
+            (StateAction action) {
                 print("> CURRENT on ACTION_LOADING_FAILED state: " + states.current());
                 scheduleMicrotask(() => print("> \t END OF microtask queue -> state: " + states.current()));
             }
@@ -127,5 +67,8 @@ A simple usage example:
 
     states.perform( ACTION_LOADING_START );
 ```
-## Features and bugs
+### SPA with States
+Please take a look how this library can help to create SPA with simple dart:html
+![SPA with States](assets/spa_with_states.gif)
+
 

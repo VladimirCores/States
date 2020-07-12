@@ -1,6 +1,6 @@
 import 'dart:html';
 
-import 'page.dart';
+import 'base/page.dart';
 
 class Navigator {
 

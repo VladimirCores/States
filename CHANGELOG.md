@@ -1,3 +1,6 @@
+## 0.9.21:
+- README update with gif for SPA with States example
+
 ## 0.9.2:
 - StatesActionListener with StateAction as first parameter
 - States constructor accept optional id, in case of null generate one based on static counter

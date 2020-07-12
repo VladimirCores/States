@@ -1,7 +1,7 @@
 import 'dart:html';
 
 import '../../const/Action.dart';
-import '../page.dart';
+import '../base/page.dart';
 
 class GalleryPage extends Page {
   ButtonElement _btnIndex;

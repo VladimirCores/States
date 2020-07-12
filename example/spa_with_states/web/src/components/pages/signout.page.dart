@@ -1,6 +1,6 @@
 import 'dart:async';
 import '../../const/Action.dart';
-import '../page.dart';
+import '../base/page.dart';
 
 class SignoutPage extends Page {
   Timer _timer;

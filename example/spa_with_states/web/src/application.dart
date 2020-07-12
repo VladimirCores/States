@@ -2,7 +2,7 @@ import 'components/navigator.dart';
 import 'components/pages/gallery.page.dart';
 import 'components/pages/index.page.dart';
 import 'components/pages/login.page.dart';
-import 'components/page.dart';
+import 'components/base/page.dart';
 import 'components/pages/signout.page.dart';
 
 class Application {

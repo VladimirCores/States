@@ -1,6 +1,6 @@
 import 'dart:html';
 import '../../const/Action.dart';
-import '../page.dart';
+import '../base/page.dart';
 
 class IndexPage extends Page {
   ButtonElement _btnLogin;

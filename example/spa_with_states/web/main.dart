@@ -5,7 +5,7 @@ import 'package:states/states.dart';
 import 'src/application.dart';
 import 'src/const/Action.dart';
 import 'src/const/State.dart';
-import 'src/components/page.dart';
+import 'src/components/base/page.dart';
 import 'src/components/navigator.dart';
 
 void main() {
