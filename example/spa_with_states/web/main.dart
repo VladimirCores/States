@@ -22,25 +22,25 @@ void main() {
   pagesStates.add( State.PAGE_GALLERY );
   pagesStates.add( State.PAGE_SIGNOUT );
 
-  pagesStates.action( State.INITIAL, State.PAGE_INDEX, Action.INITIALIZE, () => application.goToIndexPage() );
-  pagesStates.action( State.PAGE_INDEX, State.PAGE_LOGIN, Action.INDEX_PAGE_BUTTON_LOGIN_CLICKED, () => application.goToLoginPage() );
-  pagesStates.action( State.PAGE_LOGIN, State.PAGE_INDEX, Action.LOGIN_PAGE_BUTTON_INDEX_CLICKED, () => application.goToIndexPage() );
-  pagesStates.action( State.PAGE_LOGIN, State.PAGE_GALLERY, Action.LOGIN_PAGE_BUTTON_GALLERY_CLICKED, () => application.goToGalleryPage() );
+  pagesStates.action( State.INITIAL, State.PAGE_INDEX, Action.INITIALIZE, (StateAction action) => application.goToIndexPage() );
+  pagesStates.action( State.PAGE_INDEX, State.PAGE_LOGIN, Action.INDEX_PAGE_BUTTON_LOGIN_CLICKED, (StateAction action) => application.goToLoginPage() );
+  pagesStates.action( State.PAGE_LOGIN, State.PAGE_INDEX, Action.LOGIN_PAGE_BUTTON_INDEX_CLICKED, (StateAction action) => application.goToIndexPage() );
+  pagesStates.action( State.PAGE_LOGIN, State.PAGE_GALLERY, Action.LOGIN_PAGE_BUTTON_GALLERY_CLICKED, (StateAction action) => application.goToGalleryPage() );
 
   pagesStates.action(
       State.PAGE_GALLERY,
       State.PAGE_INDEX,
-      Action.GALLERY_PAGE_BUTTON_INDEX_CLICKED, () => application.goToIndexPage() );
+      Action.GALLERY_PAGE_BUTTON_INDEX_CLICKED, (StateAction action) => application.goToIndexPage() );
 
   pagesStates.action(
       State.PAGE_GALLERY,
       State.PAGE_SIGNOUT,
-      Action.GALLERY_PAGE_BUTTON_EXIT_CLICKED, () => application.goToSignoutPage() );
+      Action.GALLERY_PAGE_BUTTON_EXIT_CLICKED, (StateAction action) => application.goToSignoutPage() );
 
   pagesStates.action(
       State.PAGE_SIGNOUT,
       State.PAGE_INDEX,
-      Action.SIGNOUT_PAGE_TIMER_EXPIRED, () => application.goToIndexPage() );
+      Action.SIGNOUT_PAGE_TIMER_EXPIRED, (StateAction action) => application.goToIndexPage() );
 
   root.addEventListener(Page.EVENT_ACTION, (e) => pagesStates.perform((e as CustomEvent).detail));
 

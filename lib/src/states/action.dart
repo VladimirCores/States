@@ -32,26 +32,26 @@ class StateAction
 	/// @param toState State to move to.
 	/// @param name Action's name.
 	/// @param action Method to call on performing action.
-	StateAction( StateMeta fromState, StateMeta toState, String name, [ Function action ]) {
-		_fromState = fromState;
-		_toState = toState;
+	StateAction( StateMeta from, StateMeta to, String name, [ StatesActionListener action ]) {
+		_from = from;
+		_to = to;
 		_name = name;
 		_action = action;
 	}
 
-	StateMeta _fromState;
-	StateMeta _toState;
+	StateMeta _from;
+	StateMeta _to;
 	String _name;
-	Function _action;
+	StatesActionListener _action;
 
 	/// @return The method to call on preforming the action.
-	Function get action {
+	StatesActionListener get action {
 		return _action;
 	}
 
 	/// @return The state to move from.
-	StateMeta get fromState {
-		return _fromState;
+	StateMeta get from {
+		return _from;
 	}
 
 	/// @return The action's name.
@@ -60,7 +60,7 @@ class StateAction
 	}
 
 	/// @return  The state to move to.
-	StateMeta get toState {
-		return _toState;
+	StateMeta get to {
+		return _to;
 	}
 }

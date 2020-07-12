@@ -39,7 +39,7 @@ main() {
 			STATE_INITIAL,
 			STATE_LOADING,
 			ACTION_LOADING_START,
-			() {
+			(StateAction action) {
 				print("> CURRENT on ACTION_LOADING_START state: " + states.current());
 				scheduleMicrotask(() {
 					print("> \t END OF microtask queue -> state: " + states.current());
@@ -57,7 +57,7 @@ main() {
 			STATE_LOADING,
 			STATE_LOADING_COMPLETE,
 			ACTION_LOADING_COMPLETE,
-			() {
+			(StateAction action) {
 				print("> CURRENT on ACTION_LOADING_COMPLETE - state: " + states.current());
 				scheduleMicrotask(() => print("> \t END OF microtask queue -> state: " + states.current()));
 			}
@@ -67,7 +67,7 @@ main() {
 			STATE_LOADING,
 			STATE_LOADING_FAILED,
 			ACTION_LOADING_FAILED,
-			() {
+			(StateAction action) {
 				print("> CURRENT on ACTION_LOADING_FAILED state: " + states.current());
 				scheduleMicrotask(() => print("> \t END OF microtask queue -> state: " + states.current()));
 			}
