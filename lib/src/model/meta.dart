@@ -1,4 +1,4 @@
-part of dart_machine;
+part of machine;
 
 ///------------------------------------------------------------------------------
 ///
@@ -24,10 +24,10 @@ part of dart_machine;
 ///
 ///------------------------------------------------------------------------------
 
-class State
+class Meta
 {
 	/// State's name.
-	State( String name ) {
+	Meta( String name ) {
 		_name = name;
 	}
 

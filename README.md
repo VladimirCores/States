@@ -1,21 +1,23 @@
-# State Machine for Dart v0.1.0
+# States - Finite State Machine for Dart v0.1.0
 
 A library for Dart developers.
 
-	IDartMachine {
+	IStates {
 		
 		/**
 		 * What is the current state?
 		 * @return The current state.
 		 */
-		String currentState();
+		String current();
 		
 		/**
-		 * Does an action exist in the state machine?
+		 * Does an action or a state exist in the state machine?
 		 * @param action The action in question.
-		 * @return True if the action exists, false if it does not.
+		 * @param state The state in question.
+		 * @param conform The state in question.
+		 * @return True if the action or state exists, false if it does not.
 		 */
-		bool actionExists( String checkAction );
+		bool has({ String action, String state });
 		
 		/**
 		 * Add a valid link between two states.
@@ -26,47 +28,40 @@ A library for Dart developers.
 		 * @param handler Optional method that gets called when moving between these two states.
 		 * @return true if link was added, false if it was not.
 		 */
-		bool addAction( String fromState, String toState, String action, [ Function handler = null ]);
+		bool action( String fromState, String toState, String action, [ Function handler = null ]);
 		
 		/**
 		 * Adds a new state to the state machine.
 		 * @param newState The new state to add.
 		 * @return True is teh state was added, false if it was not.
 		 */
-		bool addState( String newState );
+		bool add( String newState );
 		
 		/**
 		 * Move from the current state to another state.
 		 * @param toState New state to try and move to.
 		 * @return True if the state machine has moved to this new state, false if it was unable to do so.
 		 */
-		bool changeState( String toState );
-		
-		/**
-		 * Does a state exist?
-		 * @param state The state in question.
-		 * @return True if the state exists, false if it does not.
-		 */
-		bool stateExists( String checkState );
+		bool change( String toState );
 		
 		/**
 		 * Change the current state by performing an action.
 		 * @param action The action to perform.
 		 * @return True if the action was able to be performed and the state machine moved to a new state, false if the action was unable to be performed.
 		 */
-		bool performAction( String actionName );
+		bool perform( String actionName );
 		
 		/**
 		 * What are the valid actions you can perform from the current state?
 		 * @return An array of actions.
 		 */
-		List<Action> validActions();
+		List<Action> actions();
 		
 		/**
 		 * What are the valid states you can get to from the current state?
 		 * @return An array of states.
 		 */
-		List<State> validStates();
+		List<Meta> metas();
 		
 		/**
 		 * Go back to the initial starting state
@@ -77,64 +72,60 @@ A library for Dart developers.
 ## Usage
 
 A simple usage example:
-  
-	import 'package:dart_machine/dart_machine.dart';
-  
-	main() {
-	
-	  DartMachine dartMachine = new DartMachine();
-	  
-		dartMachine.addState( STATE_BEGINS );
-		
-		dartMachine.addState( STATE_LOADING );
-		dartMachine.addState( STATE_LOADING_COMPLETE );
-		dartMachine.addState( STATE_LOADING_FAILED );
-	
-		dartMachine.addState( STATE_PREPARE_MODEL );
-		dartMachine.addState( STATE_PREPARE_CONTROLLER );
-		dartMachine.addState( STATE_PREPARE_VIEW );
-		dartMachine.addState( STATE_PREPARE_COMPLETE );
-		dartMachine.addState( STATE_READY );
-	
-		dartMachine.addAction(
-			STATE_BEGINS,
-			STATE_LOADING,
-			ACTION_LOADING_START,
-			() {
-				print("> CURRENT state: " + dartMachine.currentState());
-				scheduleMicrotask(() {
-					print("> \t END OF microtask queue -> state: " + dartMachine.currentState());
-					dartMachine.performAction(
-						Random.secure().nextBool()
-						? ACTION_LOADING_COMPLETE
-						: ACTION_LOADING_FAILED
-					);
-				});
-			}
-		);
-	
-		dartMachine.addAction(
-			STATE_LOADING,
-			STATE_LOADING_COMPLETE,
-			ACTION_LOADING_COMPLETE,
-			() {
-				print("> CURRENT state: " + dartMachine.currentState());
-				scheduleMicrotask(() => print("> \t END OF microtask queue -> state: " + dartMachine.currentState()));
-			}
-		);
-	
-		dartMachine.addAction(
-			STATE_LOADING,
-			STATE_LOADING_FAILED,
-			ACTION_LOADING_FAILED,
-			() {
-				print("> CURRENT state: " + dartMachine.currentState());
-				scheduleMicrotask(() => print("> \t END OF microtask queue -> state: " + dartMachine.currentState()));
-			}
-		);
-	
-		dartMachine.performAction( ACTION_LOADING_START );
-	}
+ ```dart
+	States states = new States();
 
+    states.add( STATE_INITIAL );
+
+    states.add( STATE_LOADING );
+    states.add( STATE_LOADING_COMPLETE );
+    states.add( STATE_LOADING_FAILED );
+
+    states.add( STATE_PREPARE_MODEL );
+    states.add( STATE_PREPARE_CONTROLLER );
+    states.add( STATE_PREPARE_VIEW );
+    states.add( STATE_PREPARE_COMPLETE );
+    states.add( STATE_READY );
+
+    states.action(
+            STATE_INITIAL,
+            STATE_LOADING,
+            ACTION_LOADING_START,
+            () {
+                print("> CURRENT on ACTION_LOADING_START state: " + states.current());
+                scheduleMicrotask(() {
+                    print("> \t END OF microtask queue -> state: " + states.current());
+                    var nextBool = Random.secure().nextBool();
+                    print("> \t\t next bool: " + nextBool.toString());
+                    states.perform(
+                            nextBool ?
+                            ACTION_LOADING_COMPLETE :
+                            ACTION_LOADING_FAILED
+                    );
+                });
+            });
+
+    states.action(
+            STATE_LOADING,
+            STATE_LOADING_COMPLETE,
+            ACTION_LOADING_COMPLETE,
+            () {
+                print("> CURRENT on ACTION_LOADING_COMPLETE - state: " + states.current());
+                scheduleMicrotask(() => print("> \t END OF microtask queue -> state: " + states.current()));
+            }
+    );
+
+    states.action(
+            STATE_LOADING,
+            STATE_LOADING_FAILED,
+            ACTION_LOADING_FAILED,
+            () {
+                print("> CURRENT on ACTION_LOADING_FAILED state: " + states.current());
+                scheduleMicrotask(() => print("> \t END OF microtask queue -> state: " + states.current()));
+            }
+    );
+
+    states.perform( ACTION_LOADING_START );
+```
 ## Features and bugs
 

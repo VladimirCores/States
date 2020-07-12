@@ -1,11 +1,11 @@
-name: dart_machine
-description: DartMachine is State Machine for Dart. You can define states of your application and reaction on transition between states
-version: 0.1.9
-homepage: https://github.com/DQvsRA/DartMachine
+name: states
+description: States is Finite State Machine for Dart. You can define states of your application and reaction on transition between states
+version: 0.9.0
+homepage: https://github.com/DQvsRA/States
 author: Vladimir Cores (Minkin) <vladimir.cores@gmail.com>
 
 environment:
-  sdk: '>=2.0.0-dev.68.0 <3.0.0'
+  sdk: '>=2.4.0 <3.0.0'
 
 dev_dependencies:
   test: ^1.0.0

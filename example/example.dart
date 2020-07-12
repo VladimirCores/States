@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:dart_machine/dart_machine.dart';
+import 'package:states/states.dart';
 
 main() {
 
-	String STATE_INITIAL = "state_begins";
+	String STATE_INITIAL = "state_initial";
 
 	String STATE_LOADING = "state_loading";
 	String STATE_LOADING_FAILED = "state_loading_failed";
@@ -19,58 +19,60 @@ main() {
 
 	String ACTION_LOADING_START = "action_start_loading";
 	String ACTION_LOADING_FAILED = "action_loading_failed";
-	String ACTION_LOADING_COMPLETE = "action_loading_failed";
+	String ACTION_LOADING_COMPLETE = "action_loading_complete";
 
-	DartMachine dartMachine = new DartMachine();
+	States states = new States();
 
-	dartMachine.addState( STATE_INITIAL );
+	states.add( STATE_INITIAL );
 
-	dartMachine.addState( STATE_LOADING );
-	dartMachine.addState( STATE_LOADING_COMPLETE );
-	dartMachine.addState( STATE_LOADING_FAILED );
+	states.add( STATE_LOADING );
+	states.add( STATE_LOADING_COMPLETE );
+	states.add( STATE_LOADING_FAILED );
 
-	dartMachine.addState( STATE_PREPARE_MODEL );
-	dartMachine.addState( STATE_PREPARE_CONTROLLER );
-	dartMachine.addState( STATE_PREPARE_VIEW );
-	dartMachine.addState( STATE_PREPARE_COMPLETE );
-	dartMachine.addState( STATE_READY );
+	states.add( STATE_PREPARE_MODEL );
+	states.add( STATE_PREPARE_CONTROLLER );
+	states.add( STATE_PREPARE_VIEW );
+	states.add( STATE_PREPARE_COMPLETE );
+	states.add( STATE_READY );
 
-	dartMachine.addAction(
+	states.action(
 			STATE_INITIAL,
 			STATE_LOADING,
 			ACTION_LOADING_START,
 			() {
-				print("> CURRENT state: " + dartMachine.currentState());
+				print("> CURRENT on ACTION_LOADING_START state: " + states.current());
 				scheduleMicrotask(() {
-					print("> \t END OF microtask queue -> state: " + dartMachine.currentState());
-					dartMachine.performAction(
-							Random.secure().nextBool()
-							? ACTION_LOADING_COMPLETE
-							: ACTION_LOADING_FAILED
+					print("> \t END OF microtask queue -> state: " + states.current());
+					var nextBool = Random.secure().nextBool();
+					print("> \t\t next bool: " + nextBool.toString());
+					states.perform(
+							nextBool ?
+							ACTION_LOADING_COMPLETE :
+							ACTION_LOADING_FAILED
 					);
 				});
 			});
 
-	dartMachine.addAction(
+	states.action(
 			STATE_LOADING,
 			STATE_LOADING_COMPLETE,
 			ACTION_LOADING_COMPLETE,
 			() {
-				print("> CURRENT state: " + dartMachine.currentState());
-				scheduleMicrotask(() => print("> \t END OF microtask queue -> state: " + dartMachine.currentState()));
+				print("> CURRENT on ACTION_LOADING_COMPLETE - state: " + states.current());
+				scheduleMicrotask(() => print("> \t END OF microtask queue -> state: " + states.current()));
 			}
 	);
 
-	dartMachine.addAction(
+	states.action(
 			STATE_LOADING,
 			STATE_LOADING_FAILED,
 			ACTION_LOADING_FAILED,
 			() {
-				print("> CURRENT state: " + dartMachine.currentState());
-				scheduleMicrotask(() => print("> \t END OF microtask queue -> state: " + dartMachine.currentState()));
+				print("> CURRENT on ACTION_LOADING_FAILED state: " + states.current());
+				scheduleMicrotask(() => print("> \t END OF microtask queue -> state: " + states.current()));
 			}
 	);
 
-	dartMachine.performAction( ACTION_LOADING_START );
+	states.perform( ACTION_LOADING_START );
 
 }

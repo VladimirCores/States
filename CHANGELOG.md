@@ -1,3 +1,6 @@
+## 0.9.0:
+- API change: DartMachine -> States
+
 ## 0.1.9
 - Internal files renamed no effect on functionality
 

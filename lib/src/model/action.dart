@@ -1,4 +1,4 @@
-part of dart_machine;
+part of machine;
 
 ///------------------------------------------------------------------------------
 ///
@@ -32,15 +32,15 @@ class Action
 	/// @param toState State to move to.
 	/// @param name Action's name.
 	/// @param action Method to call on performing action.
-	Action( State fromState, State toState, String name, [ Function action ]) {
+	Action( Meta fromState, Meta toState, String name, [ Function action ]) {
 		_fromState = fromState;
 		_toState = toState;
 		_name = name;
 		_action = action;
 	}
 
-	State _fromState;
-	State _toState;
+	Meta _fromState;
+	Meta _toState;
 	String _name;
 	Function _action;
 
@@ -50,7 +50,7 @@ class Action
 	}
 
 	/// @return The state to move from.
-	State get fromState {
+	Meta get fromState {
 		return _fromState;
 	}
 
@@ -60,7 +60,7 @@ class Action
 	}
 
 	/// @return  The state to move to.
-	State get toState {
+	Meta get toState {
 		return _toState;
 	}
 }
