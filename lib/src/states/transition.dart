@@ -24,43 +24,48 @@ part of states;
 ///
 ///------------------------------------------------------------------------------
 
-class StateAction
+class StatesTransition
 {
-	/// Creates a new action. The action method is optional.
-	///
-	/// @param fromState State to move form.
-	/// @param toState State to move to.
-	/// @param name Action's name.
-	/// @param action Method to call on performing action.
-	StateAction( StateMeta from, StateMeta to, String name, [ StatesActionListener action ]) {
-		_from = from;
-		_to = to;
-		_name = name;
-		_action = action;
-	}
+  /// Creates a new action. The action method is optional.
+  ///
+  /// @param fromState State to move form.
+  /// @param toState State to move to.
+  /// @param name Action's name.
+  /// @param action Method to call on performing action.
+  StatesTransition( StatesMeta from, StatesMeta to, String action, [ StatesTransitionFunction func ]) {
+    _from = from;
+    _to = to;
+    _action = action;
+    _function = func;
+  }
 
-	StateMeta _from;
-	StateMeta _to;
-	String _name;
-	StatesActionListener _action;
+  StatesMeta _from;
+  StatesMeta _to;
+  String _action;
+  StatesTransitionFunction _function;
 
-	/// @return The method to call on preforming the action.
-	StatesActionListener get action {
-		return _action;
-	}
+  void dispose() {
+    _function = null;
+    _to = null;
+    _from = null;
+  }
 
-	/// @return The state to move from.
-	StateMeta get from {
-		return _from;
-	}
+  /// @return The method to call on preforming the action.
+  StatesTransitionFunction get callback => _function;
 
-	/// @return The action's name.
-	String get name {
-		return _name;
-	}
+  /// @return The state to move from.
+  StatesMeta get from => _from;
 
-	/// @return  The state to move to.
-	StateMeta get to {
-		return _to;
-	}
+  /// @return The action's name.
+  String get action => _action;
+
+  /// @return  The state to move to.
+  StatesMeta get to => _to;
+
+  String toString() {
+    return
+      " [${_from.name}]"
+      " -> [${_to.name}]"
+      " on: [${_action}]";
+  }
 }

@@ -6,7 +6,7 @@ class IndexPage extends Page {
   ButtonElement _btnLogin;
 
   IndexPage():super() {
-    _btnLogin = new ButtonElement();
+    _btnLogin = ButtonElement();
     dom.className += "index";
     dom.style.backgroundColor = "#f1f1f1";
   }

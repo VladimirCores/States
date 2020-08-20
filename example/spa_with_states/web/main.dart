@@ -11,10 +11,10 @@ import 'src/components/navigator.dart';
 void main() {
 
   DivElement root = querySelector('#root');
-  Navigator navigator = new Navigator( root );
-  Application application = new Application( navigator );
+  Navigator navigator = Navigator( root );
+  Application application = Application( navigator );
 
-  States pagesStates = new States();
+  States pagesStates = States();
   pagesStates.add( State.INITIAL );
 
   pagesStates.add( State.PAGE_INDEX );
@@ -22,29 +22,40 @@ void main() {
   pagesStates.add( State.PAGE_GALLERY );
   pagesStates.add( State.PAGE_SIGNOUT );
 
-  pagesStates.action( State.INITIAL, State.PAGE_INDEX, Action.INITIALIZE, (StateAction action) => application.goToIndexPage() );
-  pagesStates.action( State.PAGE_INDEX, State.PAGE_LOGIN, Action.INDEX_PAGE_BUTTON_LOGIN_CLICKED, (StateAction action) => application.goToLoginPage() );
-  pagesStates.action( State.PAGE_LOGIN, State.PAGE_INDEX, Action.LOGIN_PAGE_BUTTON_INDEX_CLICKED, (StateAction action) => application.goToIndexPage() );
-  pagesStates.action( State.PAGE_LOGIN, State.PAGE_GALLERY, Action.LOGIN_PAGE_BUTTON_GALLERY_CLICKED, (StateAction action) => application.goToGalleryPage() );
+  pagesStates.when( from: State.INITIAL, to: State.PAGE_INDEX,
+    on: Action.INITIALIZE,
+    run: (StatesTransition transition) => application.goToIndexPage()
+  );
 
-  pagesStates.action(
-      State.PAGE_GALLERY,
-      State.PAGE_INDEX,
-      Action.GALLERY_PAGE_BUTTON_INDEX_CLICKED, (StateAction action) => application.goToIndexPage() );
+  pagesStates
+    ..when( from: State.PAGE_INDEX, to: State.PAGE_LOGIN,
+      on: Action.INDEX_PAGE_BUTTON_LOGIN_CLICKED,
+      run: (StatesTransition transition) => application.goToLoginPage()
+    )
+    ..when( from: State.PAGE_LOGIN, to: State.PAGE_INDEX,
+      on: Action.LOGIN_PAGE_BUTTON_INDEX_CLICKED,
+      run: (StatesTransition transition) => application.goToIndexPage()
+    )
+    ..when( from: State.PAGE_LOGIN, to: State.PAGE_GALLERY,
+      on: Action.LOGIN_PAGE_BUTTON_GALLERY_CLICKED,
+      run: (StatesTransition transition) => application.goToGalleryPage()
+    )
+    ..when( from: State.PAGE_GALLERY, to: State.PAGE_INDEX,
+      on: Action.GALLERY_PAGE_BUTTON_INDEX_CLICKED,
+      run: (StatesTransition transition) => application.goToIndexPage()
+    )
+    ..when( from: State.PAGE_GALLERY, to: State.PAGE_SIGNOUT,
+      on: Action.GALLERY_PAGE_BUTTON_EXIT_CLICKED,
+      run: (StatesTransition transition) => application.goToSignoutPage()
+    )
+    ..when( from: State.PAGE_SIGNOUT, to: State.PAGE_INDEX,
+      on: Action.SIGNOUT_PAGE_TIMER_EXPIRED,
+      run: (StatesTransition transition) => application.goToIndexPage()
+    );
 
-  pagesStates.action(
-      State.PAGE_GALLERY,
-      State.PAGE_SIGNOUT,
-      Action.GALLERY_PAGE_BUTTON_EXIT_CLICKED, (StateAction action) => application.goToSignoutPage() );
+  root.addEventListener( Page.EVENT_ACTION, (e) => pagesStates.run((e as CustomEvent).detail) );
 
-  pagesStates.action(
-      State.PAGE_SIGNOUT,
-      State.PAGE_INDEX,
-      Action.SIGNOUT_PAGE_TIMER_EXPIRED, (StateAction action) => application.goToIndexPage() );
-
-  root.addEventListener(Page.EVENT_ACTION, (e) => pagesStates.perform((e as CustomEvent).detail));
-
-  pagesStates.perform( Action.INITIALIZE );
+  pagesStates.run( Action.INITIALIZE );
 }
 
 

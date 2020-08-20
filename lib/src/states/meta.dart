@@ -24,17 +24,15 @@ part of states;
 ///
 ///------------------------------------------------------------------------------
 
-class StateMeta
+class StatesMeta
 {
 	/// State's name.
-	StateMeta( String name ) {
+	StatesMeta( String name ) {
 		_name = name;
 	}
 
 	String _name;
 
 	/// @return The state's name.
-	String get name {
-		return _name;
-	}
+	String get name => _name;
 }

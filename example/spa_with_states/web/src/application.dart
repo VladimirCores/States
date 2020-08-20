@@ -15,19 +15,19 @@ class Application {
   }
 
   void goToLoginPage() {
-    _navigateTo(new LoginPage());
+    _navigateTo(LoginPage());
   }
 
   void goToIndexPage() {
-    _navigateTo(new IndexPage());
+    _navigateTo(IndexPage());
   }
 
   void goToGalleryPage() {
-    _navigateTo(new GalleryPage());
+    _navigateTo(GalleryPage());
   }
 
   void goToSignoutPage() {
-    _navigateTo(new SignoutPage());
+    _navigateTo(SignoutPage());
   }
 
   void _navigateTo(Page page) {
