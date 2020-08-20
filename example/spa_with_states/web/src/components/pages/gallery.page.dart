@@ -7,7 +7,7 @@ class GalleryPage extends Page {
   ButtonElement _btnIndex;
   ButtonElement _btnExit;
 
-  GalleryPage():super() {
+  GalleryPage() : super() {
     _btnIndex = ButtonElement();
     _btnExit = ButtonElement();
     dom.style.backgroundColor = "antiquewhite";
@@ -37,10 +37,9 @@ class GalleryPage extends Page {
   void _handleClickEvent(event) {
     var ct = event.currentTarget;
     if (ct == _btnIndex) {
-      dispatchAction( Action.GALLERY_PAGE_BUTTON_INDEX_CLICKED );
-    }
-    else if (ct == _btnExit) {
-      dispatchAction( Action.GALLERY_PAGE_BUTTON_EXIT_CLICKED );
+      dispatchAction(Action.GALLERY_PAGE_BUTTON_INDEX_CLICKED);
+    } else if (ct == _btnExit) {
+      dispatchAction(Action.GALLERY_PAGE_BUTTON_EXIT_CLICKED);
     }
   }
 }

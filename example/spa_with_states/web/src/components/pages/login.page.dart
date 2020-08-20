@@ -7,7 +7,7 @@ class LoginPage extends Page {
   ButtonElement _btnIndex;
   ButtonElement _btnGallery;
 
-  LoginPage():super() {
+  LoginPage() : super() {
     _btnIndex = ButtonElement();
     _btnGallery = ButtonElement();
     dom.style.backgroundColor = "wheat";
@@ -34,10 +34,9 @@ class LoginPage extends Page {
   void _handleClickEvent(Event event) {
     var ct = event.currentTarget;
     if (ct == _btnIndex) {
-      dispatchAction( Action.LOGIN_PAGE_BUTTON_INDEX_CLICKED );
-    }
-    else if (ct == _btnGallery) {
-      dispatchAction( Action.LOGIN_PAGE_BUTTON_GALLERY_CLICKED );
+      dispatchAction(Action.LOGIN_PAGE_BUTTON_INDEX_CLICKED);
+    } else if (ct == _btnGallery) {
+      dispatchAction(Action.LOGIN_PAGE_BUTTON_GALLERY_CLICKED);
     }
   }
 }

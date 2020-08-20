@@ -24,15 +24,15 @@ part of states;
 ///
 ///------------------------------------------------------------------------------
 
-class StatesTransition
-{
+class StatesTransition {
   /// Creates a new action. The action method is optional.
   ///
   /// @param fromState State to move form.
   /// @param toState State to move to.
   /// @param name Action's name.
   /// @param action Method to call on performing action.
-  StatesTransition( StatesMeta from, StatesMeta to, String action, [ StatesTransitionFunction func ]) {
+  StatesTransition(StatesMeta from, StatesMeta to, String action,
+      [StatesTransitionFunction func]) {
     _from = from;
     _to = to;
     _action = action;
@@ -63,9 +63,8 @@ class StatesTransition
   StatesMeta get to => _to;
 
   String toString() {
-    return
-      " [${_from.name}]"
-      " -> [${_to.name}]"
-      " on: [${_action}]";
+    return " [${_from.name}]"
+        " -> [${_to.name}]"
+        " on: [${_action}]";
   }
 }

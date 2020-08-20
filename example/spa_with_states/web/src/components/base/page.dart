@@ -1,7 +1,6 @@
 import 'dart:html';
 
 abstract class Page {
-
   static final EVENT_ACTION = "page_event_action";
 
   DivElement dom;
@@ -12,12 +11,14 @@ abstract class Page {
   }
 
   void dispatchAction(String action) {
-    dom.dispatchEvent(CustomEvent(EVENT_ACTION, detail:action));
+    dom.dispatchEvent(CustomEvent(EVENT_ACTION, detail: action));
   }
 
-  bool shouldRender() { return true; }
+  bool shouldRender() {
+    return true;
+  }
 
-  void render() { }
+  void render() {}
   void destroy() {
     dom = null;
   }

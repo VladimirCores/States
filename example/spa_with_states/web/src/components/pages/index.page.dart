@@ -5,7 +5,7 @@ import '../base/page.dart';
 class IndexPage extends Page {
   ButtonElement _btnLogin;
 
-  IndexPage():super() {
+  IndexPage() : super() {
     _btnLogin = ButtonElement();
     dom.className += "index";
     dom.style.backgroundColor = "#f1f1f1";
@@ -26,6 +26,6 @@ class IndexPage extends Page {
   }
 
   void _handleClickEvent(event) {
-    dispatchAction( Action.INDEX_PAGE_BUTTON_LOGIN_CLICKED );
+    dispatchAction(Action.INDEX_PAGE_BUTTON_LOGIN_CLICKED);
   }
 }

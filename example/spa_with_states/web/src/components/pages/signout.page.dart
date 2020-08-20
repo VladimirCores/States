@@ -6,8 +6,8 @@ class SignoutPage extends Page {
   Timer _timer;
   int _counter = 3;
 
-  SignoutPage():super() {
-    _timer = Timer.periodic(Duration(seconds:1), _handleTimerTick);
+  SignoutPage() : super() {
+    _timer = Timer.periodic(Duration(seconds: 1), _handleTimerTick);
     dom.style.backgroundColor = "coral";
   }
 
@@ -22,8 +22,9 @@ class SignoutPage extends Page {
   }
 
   void _handleTimerTick(Timer timer) {
-    if(--_counter == 0)
-      dispatchAction( Action.SIGNOUT_PAGE_TIMER_EXPIRED );
-    else this.render();
+    if (--_counter == 0)
+      dispatchAction(Action.SIGNOUT_PAGE_TIMER_EXPIRED);
+    else
+      this.render();
   }
 }
