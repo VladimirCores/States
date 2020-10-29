@@ -1,8 +1,9 @@
-## 0.9.9:
+## 1.0.0-beta:
 - Rethinking API: when, run, lock/unlock (with key), dispose, get locked, get all
 - Subscription to state transitions: subscribe/unsubscribe
 - Examples updated to use "cascade notation" 
 - Tests updated
+- Beta mark telling that more test required
 
 ## 0.9.21:
 - README update with gif for SPA with States example
