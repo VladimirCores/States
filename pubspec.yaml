@@ -1,6 +1,6 @@
 name: states
 description: States is Finite State Machine for Dart. You can define states of your application and reaction on transition between states
-version: 1.0.0-beta
+version: 1.0.0
 homepage: https://github.com/vladimircores/States
 
 environment:

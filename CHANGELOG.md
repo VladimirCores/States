@@ -1,3 +1,9 @@
+## 1.0.0:
+- Release version
+- Renaming - from -> at, run -> handler, StatesTransitionFunction -> StatesTransitionHandler. 
+- Each transition now has list of handlers instead of one it had before, thus execute method run them all in a sequence. 
+- New API method - on - allows adding or appending another handler later on after transitional already made, but only for existing transition.
+
 ## 1.0.0-beta:
 - Rethinking API: when, run, lock/unlock (with key), dispose, get locked, get all
 - Subscription to state transitions: subscribe/unsubscribe

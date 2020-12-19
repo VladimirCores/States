@@ -60,7 +60,7 @@ class States extends IStates {
       stateActionExists = state != null;
 
     if (state != null) {
-      stateNameExists = _findStateMetaByState(state) != null;
+      stateNameExists = _findStateMetaByName(state) != null;
     } else
       stateNameExists = stateActionExists;
 
@@ -86,8 +86,8 @@ class States extends IStates {
   }) {
     if (locked) return null;
 
-    StatesMeta statesTransitionMetaFrom;
-    StatesMeta statesTransitionMetaTo;
+    StatesMeta metaFrom;
+    StatesMeta metaTo;
 
     /// can't have duplicate actions
     for (StatesTransition transitions in _transitions) {
@@ -100,19 +100,19 @@ class States extends IStates {
       if (actionAlreadyRegistered) return null;
     }
 
-    statesTransitionMetaFrom = _findStateMetaByState(at);
-    if (statesTransitionMetaFrom == null) {
-      statesTransitionMetaFrom = add(at);
+    metaFrom = _findStateMetaByName(at);
+    if (metaFrom == null) {
+      metaFrom = add(at);
     }
 
-    statesTransitionMetaTo = _findStateMetaByState(to);
-    if (statesTransitionMetaTo == null) {
-      statesTransitionMetaTo = add(to);
+    metaTo = _findStateMetaByName(to);
+    if (metaTo == null) {
+      metaTo = add(to);
     }
 
     final st = StatesTransition(
-        statesTransitionMetaFrom,
-        statesTransitionMetaTo,
+        metaFrom,
+        metaTo,
         on,
         handler
     );
@@ -242,7 +242,7 @@ class States extends IStates {
   ///
   /// @return An array of actions.
   List<StatesTransition> actions({String from}) {
-    StatesMeta base = from == null ? current : _findStateMetaByState(from);
+    StatesMeta base = from == null ? current : _findStateMetaByName(from);
     List<StatesTransition> actions = [];
     for (var action in _transitions) {
       if (action.at == base) {
@@ -256,7 +256,7 @@ class States extends IStates {
   ///
   /// @return An array of states.
   List<StatesMeta> metas({String from}) {
-    StatesMeta base = from == null ? current : _findStateMetaByState(from);
+    StatesMeta base = from == null ? current : _findStateMetaByName(from);
     List<StatesMeta> metas = [];
     for (var action in _transitions) {
       if (action.at == base) {
@@ -266,7 +266,7 @@ class States extends IStates {
     return metas;
   }
 
-  StatesMeta _findStateMetaByState(String state) {
+  StatesMeta _findStateMetaByName(String state) {
     for (var stateMeta in _metas) {
       if (stateMeta.name == state) {
         return stateMeta;
