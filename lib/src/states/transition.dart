@@ -2,7 +2,7 @@ part of states;
 
 ///------------------------------------------------------------------------------
 ///
-/// Copyright (c) 2018 Vladimir Cores (Minkin) @ LOGICO Technologies (https://logico.tech)
+/// Copyright (c) 2019 Vladimir Cores (Minkin)
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
 /// of this software and associated documentation files (the "Software"), to deal
@@ -32,29 +32,33 @@ class StatesTransition {
   /// @param name Action's name.
   /// @param action Method to call on performing action.
   StatesTransition(StatesMeta from, StatesMeta to, String action,
-      [StatesTransitionFunction func]) {
+      [StatesTransitionHandler handler]) {
     _from = from;
     _to = to;
     _action = action;
-    _function = func;
+    append(handler);
   }
 
   StatesMeta _from;
   StatesMeta _to;
   String _action;
-  StatesTransitionFunction _function;
+  final _handlers = List<StatesTransitionHandler>();
 
   void dispose() {
-    _function = null;
+    _handlers.clear();
     _to = null;
     _from = null;
   }
 
+  void append(StatesTransitionHandler func) {
+    if (func != null) _handlers.add(func);
+  }
+
   /// @return The method to call on preforming the action.
-  StatesTransitionFunction get callback => _function;
+  List<StatesTransitionHandler> get handlers => _handlers;
 
   /// @return The state to move from.
-  StatesMeta get from => _from;
+  StatesMeta get at => _from;
 
   /// @return The action's name.
   String get action => _action;

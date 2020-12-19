@@ -11,10 +11,10 @@ abstract class IStates {
   
   StatesMeta add( String state );
   StatesTransition when({
-    String from,
+    String at,
     String to,
     String on,
-    StatesTransitionFunction run
+    StatesTransitionFunction handler
   });
   
   String subscribe(StatesTransitionFunction listener);
@@ -27,7 +27,8 @@ abstract class IStates {
     bool conform = true
   });
   StatesTransition get( String action );
-  bool run( String action );
+  bool execute( String action );
+  bool on(String action, StatesTransitionHandler listener);
   
   void reset();
   void dispose();
@@ -50,10 +51,10 @@ abstract class IStates {
   states.add( STATE_LOADING_FAILED );
 
   states.when(
-    from: STATE_INITIAL,
+    at: STATE_INITIAL,
     to: STATE_LOADING,
     on: ACTION_LOADING_START,
-    run: (StatesTransition action) {
+    execute: (StatesTransition action) {
       print("> CURRENT on ACTION_LOADING_START state: " + states.current);
       scheduleMicrotask(() {
         print("> \t END OF microtask queue -> state: " + states.current);
@@ -64,20 +65,20 @@ abstract class IStates {
       });
   
   states.when(
-    from: STATE_LOADING,
+    at: STATE_LOADING,
     to: STATE_LOADING_COMPLETE,
     on: ACTION_LOADING_COMPLETE,
-    run: (StatesTransition action) {
+    execute: (StatesTransition action) {
       print("> CURRENT on ACTION_LOADING_COMPLETE - state: " + states.current);
       scheduleMicrotask(() => print("> \t END OF microtask queue -> state: " + states.current));
     }
   );
   
   states.when(
-    from: STATE_LOADING,
+    at: STATE_LOADING,
     to: STATE_LOADING_FAILED,
     on: ACTION_LOADING_FAILED,
-    run: (StatesTransition action) {
+    execute: (StatesTransition action) {
       print("> CURRENT on ACTION_LOADING_FAILED state: " + states.current);
       scheduleMicrotask(() => print("> \t END OF microtask queue -> state: " + states.current));
     }

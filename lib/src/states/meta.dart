@@ -32,6 +32,8 @@ class StatesMeta {
 
   String _name;
 
+  bool isEqual(String name) => _name == name;
+
   /// @return The state's name.
   String get name => _name;
 }
