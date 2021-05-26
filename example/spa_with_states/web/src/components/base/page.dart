@@ -3,10 +3,9 @@ import 'dart:html';
 abstract class Page {
   static final EVENT_ACTION = "page_event_action";
 
-  DivElement dom;
+  DivElement dom = DivElement();
 
   Page() {
-    dom = DivElement();
     dom.className = "page ";
   }
 
@@ -20,6 +19,6 @@ abstract class Page {
 
   void render() {}
   void destroy() {
-    dom = null;
+    dom.remove();
   }
 }

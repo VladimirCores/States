@@ -1,3 +1,8 @@
+## 1.1.0:
+- Null-safety changes implemented
+- Examples with null-safety
+- General corrections and few logs
+
 ## 1.0.0:
 - Release version
 - Renaming - from -> at, run -> handler, StatesTransitionFunction -> StatesTransitionHandler. 

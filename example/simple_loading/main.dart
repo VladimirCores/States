@@ -58,7 +58,7 @@ main() {
       handler: (StatesTransition transition) {
         printMessage("ACTION_LOADING_COMPLETE", states.current, transition);
         scheduleMicrotask(() =>
-            print("> \t END OF microtask queue -> state: " + states.current));
+            print("> \t END OF microtask queue -> state: ${states.current}"));
       });
 
   states.when(
@@ -68,7 +68,7 @@ main() {
       handler: (StatesTransition transition) {
         printMessage("ACTION_LOADING_FAILED", states.current, transition);
         scheduleMicrotask(() =>
-            print("> \t END OF microtask queue -> state: " + states.current));
+            print("> \t END OF microtask queue -> state: ${states.current}"));
       });
 
   print("> BEFORE LOADING START -> state: ${states.current}");

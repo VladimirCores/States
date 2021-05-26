@@ -3,7 +3,7 @@ import '../../const/Action.dart';
 import '../base/page.dart';
 
 class SignoutPage extends Page {
-  Timer _timer;
+  late Timer _timer;
   int _counter = 3;
 
   SignoutPage() : super() {
@@ -17,7 +17,6 @@ class SignoutPage extends Page {
 
   void destroy() {
     _timer.cancel();
-    _timer = null;
     super.destroy();
   }
 

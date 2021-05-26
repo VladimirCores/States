@@ -3,13 +3,13 @@ import 'dart:html';
 import 'base/page.dart';
 
 class Navigator {
-  DivElement _root;
+  late DivElement _root;
 
   Navigator(DivElement root) {
     _root = root;
   }
 
-  Page navigateFromTo(Page from, Page to) {
+  Page navigateFromTo(Page? from, Page to) {
     if (from != null) {
       from.dom.remove();
       from.destroy();

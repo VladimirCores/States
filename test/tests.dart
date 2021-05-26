@@ -33,10 +33,9 @@ void main() {
           to: STATE_LOADING,
           on: ACTION_LOADING_START,
           handler: (StatesTransition transition) {
-            print("> From Action: STATE_BEGINS transition \n\t\tfrom: " +
-                states.current);
+            print("> From Action: STATE_BEGINS transition \n\t\tfrom: ${states.current}");
             scheduleMicrotask(() {
-              print("\t\tto: " + states.current);
+              print("\t\tto: ${states.current}");
             });
           }
         )
@@ -45,14 +44,14 @@ void main() {
           to: STATE_LOADING_COMPLETE,
           on: ACTION_LOADING_COMPLETE,
           handler: (StatesTransition transition) => print(
-            "> ACTION_LOADING_COMPLETE transition from: " + states.current)
+            "> ACTION_LOADING_COMPLETE transition from: ${states.current}")
         )
         ..when(
           at: STATE_LOADING,
           to: STATE_LOADING_FAILED,
           on: ACTION_LOADING_FAILED,
           handler: (StatesTransition transition) => print(
-            "> ACTION_LOADING_FAILED transition from: " + states.current)
+            "> ACTION_LOADING_FAILED transition from: ${states.current}")
         )
         ..when(
           at: STATE_LOADING_FAILED,
@@ -80,7 +79,7 @@ void main() {
     });
 
     test('2) Trying to change state to STATE_LOADING', () {
-      expect(states.change(to: STATE_LOADING), isTrue);
+      expect(states.change(toStateName: STATE_LOADING), isTrue);
     });
 
     test('3) Current state should be STATE_LOADING', () {

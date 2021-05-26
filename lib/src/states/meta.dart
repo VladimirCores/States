@@ -25,12 +25,12 @@ part of states;
 ///------------------------------------------------------------------------------
 
 class StatesMeta {
+  late String _name;
+
   /// State's name.
   StatesMeta(String name) {
     _name = name;
   }
-
-  String _name;
 
   bool isEqual(String name) => _name == name;
 

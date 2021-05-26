@@ -24,6 +24,8 @@ part of states;
 ///
 ///------------------------------------------------------------------------------
 
+typedef StatesTransitionHandler = void Function(StatesTransition transition);
+
 class StatesTransition {
   /// Creates a new action. The action method is optional.
   ///
@@ -31,26 +33,23 @@ class StatesTransition {
   /// @param toState State to move to.
   /// @param name Action's name.
   /// @param action Method to call on performing action.
-  StatesTransition(StatesMeta from, StatesMeta to, String action,
-      [StatesTransitionHandler handler]) {
+  StatesTransition(StatesMeta? from, StatesMeta? to, String action, [StatesTransitionHandler? handler]) {
     _from = from;
     _to = to;
     _action = action;
     append(handler);
   }
 
-  StatesMeta _from;
-  StatesMeta _to;
-  String _action;
-  final _handlers = List<StatesTransitionHandler>();
+  late final StatesMeta? _from;
+  late final StatesMeta? _to;
+  late String _action;
+  final List<StatesTransitionHandler> _handlers = [];
 
   void dispose() {
     _handlers.clear();
-    _to = null;
-    _from = null;
   }
 
-  void append(StatesTransitionHandler func) {
+  void append(StatesTransitionHandler? func) {
     if (func != null) _handlers.add(func);
   }
 
@@ -58,17 +57,17 @@ class StatesTransition {
   List<StatesTransitionHandler> get handlers => _handlers;
 
   /// @return The state to move from.
-  StatesMeta get at => _from;
+  StatesMeta? get at => _from;
 
   /// @return The action's name.
   String get action => _action;
 
   /// @return  The state to move to.
-  StatesMeta get to => _to;
+  StatesMeta? get to => _to;
 
   String toString() {
-    return " [${_from.name}]"
-        " -> [${_to.name}]"
+    return " [${_from?.name}]"
+        " -> [${_to?.name}]"
         " on: [${_action}]";
   }
 }

@@ -6,8 +6,8 @@ import 'components/base/page.dart';
 import 'components/pages/signout.page.dart';
 
 class Application {
-  Page _currentPage;
-  Navigator _navigator;
+  Page? _currentPage;
+  late final Navigator _navigator;
 
   Application(Navigator navigator) {
     _navigator = navigator;

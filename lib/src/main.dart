@@ -1,11 +1,7 @@
 library states;
 
-import 'package:meta/meta.dart';
-
 part 'states/meta.dart';
 part 'states/transition.dart';
-
-typedef StatesTransitionHandler = void Function(StatesTransition transition);
 
 class States extends IStates {
   static const String DISPOSE = 'states_reserved_action_dispose';
@@ -13,17 +9,17 @@ class States extends IStates {
 
   static int _INDEX = 0;
 
-  String id;
+  String? id;
 
   String _lockKey = '';
   bool get locked => _lockKey.length > 0;
-  List<StatesTransition> get all => _transitions.map((e) => e);
+  List<StatesTransition> get all => _transitions.map((e) => e) as List<StatesTransition>;
 
   /// What is the current state?
   ///
   /// @return The current state.
-  String get current =>
-      _currentStateMeta != null ? _currentStateMeta.name : null;
+  String? get current => _currentStateMeta?.name;
+  StatesMeta? _currentStateMeta;
 
   /// Create a state machine and populate with states
   States({this.id = null}) {
@@ -31,17 +27,16 @@ class States extends IStates {
     id = id ?? 'states_$_INDEX';
   }
 
-  final List<StatesTransition> _transitions = List<StatesTransition>();
-  final List<StatesMeta> _metas = List<StatesMeta>();
-  final Map<String, StatesTransitionHandler> _subscribers =
-      Map<String, StatesTransitionHandler>();
+  final List<StatesTransition> _transitions = [];
+  final List<StatesMeta> _metas = [];
+  final Map<String, StatesTransitionHandler> _subscribers = Map<String, StatesTransitionHandler>();
 
-  StatesMeta _currentStateMeta;
-  void _changeCurrentStateWithTransition(StatesTransition transition,
-      {bool run = true}) {
-    if (run && transition.handlers.isNotEmpty) transition.handlers
-        .forEach((handler) => handler(transition));
+  void _changeCurrentStateWithTransition(StatesTransition transition, {bool run = true}) {
+    if (run && transition.handlers.isNotEmpty) {
+      transition.handlers.forEach((handler) => handler(transition));
+    }
     _currentStateMeta = transition.to;
+    // print('<<< _currentStateMeta: ${_currentStateMeta}');
     _subscribers.values.forEach((s) => s(transition));
   }
 
@@ -49,7 +44,7 @@ class States extends IStates {
   ///
   /// @param action The action in question.
   /// @return True if the action exists, false if it does not.
-  bool has({String action, String state, bool conform = true}) {
+  bool has({String? action, String? state, bool conform = true}) {
     var result = false;
     bool stateActionExists = false;
     bool stateNameExists = false;
@@ -78,22 +73,23 @@ class States extends IStates {
   /// @param action Action that when performed will move from the from state to the to state.
   /// @param handler Optional method that gets called when moving between these two states.
   /// @return true if link was added, false if it was not.
-  StatesTransition when({
-    @required String at,
-    @required String to,
-    @required String on,
-    StatesTransitionHandler handler
+  StatesTransition? when({
+    required String at,
+    required String to,
+    required String on,
+    StatesTransitionHandler? handler
   }) {
+    // print('< States -> when: ${at} | ${to} | ${on}');
     if (locked) return null;
 
-    StatesMeta metaFrom;
-    StatesMeta metaTo;
+    StatesMeta? metaFrom;
+    StatesMeta? metaTo;
 
     /// can't have duplicate actions
     for (StatesTransition transitions in _transitions) {
       final actionAlreadyRegistered =
-        transitions.at.name == at &&
-        transitions.to.name == to &&
+        transitions.at?.name == at &&
+        transitions.to?.name == to &&
         transitions.handlers.contains(handler) &&
         transitions.action == on;
 
@@ -111,8 +107,8 @@ class States extends IStates {
     }
 
     final st = StatesTransition(
-        metaFrom,
-        metaTo,
+        metaFrom!,
+        metaTo!,
         on,
         handler
     );
@@ -121,10 +117,9 @@ class States extends IStates {
     return st;
   }
 
-  String subscribe(StatesTransitionHandler func, {bool single = false}) {
+  String? subscribe(StatesTransitionHandler func, {bool single = false}) {
     if (single && _subscribers.values.any((s) => s == func)) return null;
-    final subscriptionKey =
-        '_ssk${_subscribers.length}${DateTime.now().toString()}';
+    final subscriptionKey = '_ssk${_subscribers.length}${DateTime.now().toString()}';
     _subscribers[subscriptionKey] = func;
     return subscriptionKey;
   }
@@ -139,7 +134,8 @@ class States extends IStates {
   ///
   /// @param newState The new state to add.
   /// @return True is teh state was added, false if it was not.
-  StatesMeta add(String state) {
+  StatesMeta? add(String state) {
+    // print('< States -> add: ${state}');
     if (locked) return null;
 
     /// can't have duplicate states
@@ -148,7 +144,10 @@ class States extends IStates {
     _metas.add(stateMeta);
 
     /// if no states exist set current state to first state
-    if (_metas.length == 1) _currentStateMeta = stateMeta;
+    if (_metas.length == 1) {
+      _currentStateMeta = stateMeta;
+      // print('<< _currentStateMeta: ${stateMeta.name}');
+    }
     return stateMeta;
   }
 
@@ -157,10 +156,10 @@ class States extends IStates {
   /// @param toState New state to try and move to.
   /// @param performAction Should execute action function or not, default true.
   /// @return True if the state machine has moved to this new state, false if it was unable to do so.
-  bool change({@required String to, bool run = true}) {
-    if (!has(state: to)) return false;
+  bool change({required String toStateName, bool run = true}) {
+    if (!has(state: toStateName)) return false;
     for (var transition in _transitions) {
-      if (transition.at == _currentStateMeta && transition.to.isEqual(to)) {
+      if (transition.at == _currentStateMeta && transition.to != null && transition.to!.isEqual(toStateName)) {
         _changeCurrentStateWithTransition(transition, run: run);
         return true;
       }
@@ -174,8 +173,10 @@ class States extends IStates {
   /// @param action The action to perform.
   /// @return True if the action was able to be performed and the state machine moved to a new state, false if the action was unable to be performed.
   bool execute(String action) {
+    // print('< States -> execute: ${action}');
     for (var transition in _transitions) {
       if (transition.at == _currentStateMeta && transition.action == action) {
+        // print('<< transition: ${transition}');
         _changeCurrentStateWithTransition(transition);
         return true;
       }
@@ -198,7 +199,7 @@ class States extends IStates {
     return false;
   }
 
-  StatesTransition get(String action) {
+  StatesTransition? get(String action) {
     for (var stateAction in _transitions) {
       if (action == stateAction.action) {
         return stateAction;
@@ -207,12 +208,12 @@ class States extends IStates {
     return null;
   }
 
-  void lock({@required String key}) {
+  void lock({required String key}) {
     if (key == null || key.length == 0) throw Exception(EXCEPTION__LOCK_KEY);
     _lockKey = key;
   }
 
-  void unlock({@required String key}) {
+  void unlock({required String key}) {
     if (_lockKey == key) _lockKey = '';
   }
 
@@ -226,11 +227,10 @@ class States extends IStates {
     for (var action in _transitions) {
       action.dispose();
     }
-    final disposeTransition =
-        StatesTransition(_currentStateMeta, null, DISPOSE);
+    final disposeTransition = StatesTransition(_currentStateMeta!, null, DISPOSE);
     for (var key in _subscribers.keys) {
       var sub = _subscribers[key];
-      sub(disposeTransition);
+      if (sub != null) sub(disposeTransition);
     }
     _subscribers.clear();
     _transitions.clear();
@@ -241,8 +241,8 @@ class States extends IStates {
   /// What are the valid actions you can perform from the current state?
   ///
   /// @return An array of actions.
-  List<StatesTransition> actions({String from}) {
-    StatesMeta base = from == null ? current : _findStateMetaByName(from);
+  List<StatesTransition> actions({String? from}) {
+    StatesMeta? base = from == null ? _currentStateMeta : _findStateMetaByName(from);
     List<StatesTransition> actions = [];
     for (var action in _transitions) {
       if (action.at == base) {
@@ -255,18 +255,18 @@ class States extends IStates {
   /// What are the valid states you can get to from the current state?
   ///
   /// @return An array of states.
-  List<StatesMeta> metas({String from}) {
-    StatesMeta base = from == null ? current : _findStateMetaByName(from);
+  List<StatesMeta> metas({String? from}) {
+    StatesMeta? base = from == null ? _currentStateMeta : _findStateMetaByName(from);
     List<StatesMeta> metas = [];
     for (var action in _transitions) {
-      if (action.at == base) {
-        metas.add(action.to);
+      if (action.at == base && action.to != null) {
+        metas.add(action.to!);
       }
     }
     return metas;
   }
 
-  StatesMeta _findStateMetaByName(String state) {
+  StatesMeta? _findStateMetaByName(String state) {
     for (var stateMeta in _metas) {
       if (stateMeta.name == state) {
         return stateMeta;
@@ -275,7 +275,7 @@ class States extends IStates {
     return null;
   }
 
-  StatesTransition _findStateTransitionByAction(String action) {
+  StatesTransition? _findStateTransitionByAction(String action) {
     for (var transition in _transitions) {
       if (transition.action == action) {
         return transition;
@@ -286,29 +286,31 @@ class States extends IStates {
 }
 
 abstract class IStates {
-  String get current;
+  String? get current;
   bool get locked;
   List<StatesTransition> get all;
 
   List<StatesTransition> actions({String from});
   List<StatesMeta> metas({String from});
 
-  StatesMeta add(String state);
-  StatesTransition when(
-      {String at, String to, String on, StatesTransitionHandler handler});
+  StatesMeta? add(String state);
+  StatesTransition? when({
+    required String at, required String to, required String on,
+    StatesTransitionHandler? handler
+  });
 
-  String subscribe(StatesTransitionHandler listener);
+  String? subscribe(StatesTransitionHandler listener);
   bool unsubscribe(String subscriptionKey);
 
-  bool change({String to, bool run = true});
-  bool has({String action, String state, bool conform = true});
-  StatesTransition get(String action);
+  bool change({required String toStateName, bool run = true});
+  bool? has({String action, String state, bool conform = true});
+  StatesTransition? get(String action);
   bool execute(String action);
   bool on(String action, StatesTransitionHandler listener);
 
   void reset();
   void dispose();
 
-  void lock({@required String key});
-  void unlock({@required String key});
+  void lock({required String key});
+  void unlock({required String key});
 }
