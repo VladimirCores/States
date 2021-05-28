@@ -42,12 +42,9 @@ main() {
         printMessage("ACTION_LOADING_START", states.current, transition);
         scheduleMicrotask(() {
           var nextBool = Random.secure().nextBool();
-          var nextAction =
-              nextBool ? ACTION_LOADING_COMPLETE : ACTION_LOADING_FAILED;
-          print(
-              "> \t END OF microtask queue -> state: ${states.current} next action: ${nextAction}");
-          states
-              .execute(nextBool ? ACTION_LOADING_COMPLETE : ACTION_LOADING_FAILED);
+          var nextAction = nextBool ? ACTION_LOADING_COMPLETE : ACTION_LOADING_FAILED;
+          print("> \t END OF microtask queue -> state: ${states.current} next action: ${nextAction}");
+          states.execute(nextBool ? ACTION_LOADING_COMPLETE : ACTION_LOADING_FAILED);
         });
       });
 
@@ -57,8 +54,7 @@ main() {
       on: ACTION_LOADING_COMPLETE,
       handler: (StatesTransition transition) {
         printMessage("ACTION_LOADING_COMPLETE", states.current, transition);
-        scheduleMicrotask(() =>
-            print("> \t END OF microtask queue -> state: ${states.current}"));
+        scheduleMicrotask(() => print("> \t END OF microtask queue -> state: ${states.current}"));
       });
 
   states.when(
@@ -67,8 +63,7 @@ main() {
       on: ACTION_LOADING_FAILED,
       handler: (StatesTransition transition) {
         printMessage("ACTION_LOADING_FAILED", states.current, transition);
-        scheduleMicrotask(() =>
-            print("> \t END OF microtask queue -> state: ${states.current}"));
+        scheduleMicrotask(() => print("> \t END OF microtask queue -> state: ${states.current}"));
       });
 
   print("> BEFORE LOADING START -> state: ${states.current}");
@@ -77,6 +72,5 @@ main() {
 }
 
 void printMessage(action, state, transition) {
-  print(
-      "> CURRENT -> $action \n\t\tstate: $state \n\t\ttransition: ${transition.toString()}");
+  print("> CURRENT -> $action \n\t\tstate: $state \n\t\ttransition: ${transition.toString()}");
 }
